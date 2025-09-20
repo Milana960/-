@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест: Готов ли ты к студенческой жизни?</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #950b0b 0%, #f1caba 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            width: 100%;
+            max-width: 800px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        header {
+            background: linear-gradient(90deg, #palette 0%, #palette 100%);
+            color: black;
+            text-align: center;
+            padding: 30px 20px;
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .description {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        
+        .progress-container {
+            background: #f0f0f0;
+            height: 10px;
+            width: 100%;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #FF416C 0%, #FF4B2B 100%);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .test-content {
+            padding: 30px;
+        }
+        
+        .question {
+            margin-bottom: 30px;
+            display: none;
+        }
+        
+        .question.active {
+            display: block;
+        }
+        
+        .question-text {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .question-number {
+            background: #4776E6;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        
+        .answers {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .answer {
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .answer:hover {
+            border-color: #4776E6;
+            background-color: #f8f9ff;
+        }
+        
+        .answer.selected {
+            border-color: #4776E6;
+            background-color: #eef0ff;
+        }
+        
+        .answer-emoji {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        #prev-btn {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        #prev-btn:hover {
+            background: #e0e0e0;
+        }
+        
+        #next-btn {
+            background: #4776E6;
+            color: white;
+        }
+        
+        #next-btn:hover {
+            background: #3a62c0;
+        }
+        
+        #submit-btn {
+            background: #28a745;
+            color: white;
+            display: none;
+        }
+        
+        #submit-btn:hover {
+            background: #218838;
+        }
+        
+        .result {
+            display: none;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .result-title {
+            font-size: 26px;
+            color: #4776E6;
+            margin-bottom: 20px;
+        }
+        
+        .result-text {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            text-align: left;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 5px solid #4776E6;
+        }
+        
+        .score {
+            font-size: 22px;
+            font-weight: bold;
+            color: #FF4B2B;
+            margin: 15px 0;
+        }
+        
+        .emoji-container {
+            font-size: 40px;
+            margin: 20px 0;
+        }
+        
+        @media (max-width: 600px) {
+            .question-text {
+                font-size: 18px;
+            }
+            
+            .test-content {
+                padding: 20px;
+            }
+            
+            .result {
+                padding: 20px;
+            }
+            
+            .result-title {
+                font-size: 22px;
+            }
+            
+            .result-text {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Насколько ты готов к студенческой жизни?</h1>
+            <p class="description">Пройди тест, чтобы узнать свой результат!</p>
+        </header>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        
+        <div class="test-content">
+            <form id="test-form">
+                <!-- Вопросы будут добавляться здесь -->
+            </form>
+            
+            <div class="navigation">
+                <button id="prev-btn">Назад</button>
+                <button id="next-btn">Вперед</button>
+                <button id="submit-btn">Узнать результат</button>
+            </div>
+        </div>
+        
+        <div class="result" id="result">
+            <!-- Результат будет отображаться здесь -->
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Данные теста
+            const testData = [
+                {
+                    question: "Как планируешь совмещать своë время для учëбы и отдыха?",
+                    emoji: "👩‍💻",
+                    answers: [
+                        { text: "у меня всегда есть чёткий план", points: 3 },
+                        { text: "как карта ляжет, люблю в моменте решать", points: 2 },
+                        { text: "с этим у меня есть небольшие проблемы..", points: 1 }
+                    ]
+                },
+                {
+                    question: "Как планируешь находить время для общения с друзьями?",
+                    emoji: "🙌",
+                    answers: [
+                        { text: "каждые выходные мы встречаемся и дико тусим", points: 3 },
+                        { text: "буду общаться, когда будет свободная минутка", points: 2 },
+                        { text: "общение не в приоритете для меня", points: 1 }
+                    ]
+                },
+                {
+                    question: "Какой софт-скилл поможет тебе найти время для общения с друзьями?",
+                    emoji: "🤔",
+                    answers: [
+                        { text: "тайм-менеджмент", points: 1 },
+                        { text: "коммуникабельность", points: 0 },
+                        { text: "адаптивность", points: 0 }
+                    ]
+                },
+                {
+                    question: "Что будешь делать, если не поймëшь материал на лекции?",
+                    emoji: "📚",
+                    answers: [
+                        { text: "сразу спрошу у преподавателя или одногруппников", points: 3 },
+                        { text: "попробую разобраться самостоятельно", points: 2 },
+                        { text: "буду надеяться, что на экзамене это не попадëтся", points: 1 }
+                    ]
+                },
+                {
+                    question: "Как будешь справляться со стрессом во время сессии?",
+                    emoji: "🫠",
+                    answers: [
+                        { text: "найду немного времени для своего любимого хобби", points: 3 },
+                        { text: "стресс — это не про меня", points: 2 },
+                        { text: "отдыхать некогда, буду учить абсолютно всë, кто знает, какой будет вопрос ", points: 1 }
+                    ]
+                },
+                {
+                    question: "Что думаешь про активности в ВУЗе?",
+                    emoji: "🤩",
+                    answers: [
+                        { text: "хочу попробовать себя везде!", points: 3 },
+                        { text: "возможно запишусь куда-нибудь, если будет время", points: 2 },
+                        { text: "я занятой человек, мне это неинтересно", points: 1 }
+                    ]
+                },
+                {
+                    question: "Хотел(а) бы попробовать свои силы в другом направлении? (бизнес, программирование, инженерия и тп)",
+                    emoji: "😎",
+                    answers: [
+                        { text: "да, с большим удовольствием!", points: 3 },
+                        { text: "возможно, если будет время", points: 2 },
+                        { text: "мне своей учëбы хватает", points: 1 }
+                    ]
+                },
+                {
+                    question: "Как относишься к работе во время учëбы?",
+                    emoji: "💻",
+                    answers: [
+                        { text: "отличный способ прокачать soft-skills на практике", points: 3 },
+                        { text: "не знаю, как совмещать работу и учëбу", points: 2 },
+                        { text: "сначала получу диплом, а потом уже работа", points: 1 }
+                    ]
+                },
+                {
+                    question: "Знаком(а) ли ты с кейс-чемпионатами, хакатонами?",
+                    emoji: "⏳",
+                    answers: [
+                        { text: "да, конечно!", points: 3 },
+                        { text: "хотелось бы подробнее узнать об этом", points: 2 },
+                        { text: "мне это неинтересно", points: 1 }
+                    ]
+                }
+            ];
+
+            const testForm = document.getElementById('test-form');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const submitBtn = document.getElementById('submit-btn');
+            const progressBar = document.getElementById('progress-bar');
+            const resultDiv = document.getElementById('result');
+            
+            let currentQuestion = 0;
+            const userAnswers = new Array(testData.length).fill(null);
+            
+            // Создание вопросов
+            testData.forEach((questionData, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.id = `question-${index}`;
+                
+                let questionHTML = `
+                    <div class="question-text">
+                        <span class="question-number">${index + 1}</span>
+                        <span>${questionData.question} ${questionData.emoji}</span>
+                    </div>
+                    <div class="answers">
+                `;
+                
+                questionData.answers.forEach((answer, aIndex) => {
+                    questionHTML += `
+                        <div class="answer" data-points="${answer.points}">
+                            <span class="answer-emoji">${String.fromCharCode(97 + aIndex)})</span>
+                            <span>${answer.text}</span>
+                        </div>
+                    `;
+                });
+                
+                questionHTML += '</div>';
+                questionDiv.innerHTML = questionHTML;
+                testForm.appendChild(questionDiv);
+                
+                // Добавляем обработчики для ответов
+                questionDiv.querySelectorAll('.answer').forEach(answerEl => {
+                    answerEl.addEventListener('click', () => {
+                        questionDiv.querySelectorAll('.answer').forEach(a => {
+                            a.classList.remove('selected');
+                        });
+                        answerEl.classList.add('selected');
+                        userAnswers[index] = parseInt(answerEl.getAttribute('data-points'));
+                    });
+                });
+            });
+            
+            // Показываем первый вопрос
+            showQuestion(0);
+            
+            // Обновляем прогресс бар
+            function updateProgressBar() {
+                const progress = ((currentQuestion + 1) / testData.length) * 100;
+                progressBar.style.width = `${progress}%`;
+            }
+            
+            // Показываем вопрос
+            function showQuestion(index) {
+                document.querySelectorAll('.question').forEach(q => {
+                    q.classList.remove('active');
+                });
+                
+                document.getElementById(`question-${index}`).classList.add('active');
+                
+                // Обновляем состояние кнопок
+                prevBtn.style.display = index === 0 ? 'none' : 'block';
+                nextBtn.style.display = index === testData.length - 1 ? 'none' : 'block';
+                submitBtn.style.display = index === testData.length - 1 ? 'block' : 'none';
+                
+                updateProgressBar();
+            }
+            
+            // Следующий вопрос
+            nextBtn.addEventListener('click', () => {
+                if (userAnswers[currentQuestion] === null) {
+                    alert('Пожалуйста, выберите ответ на текущий вопрос');
+                    return;
+                }
+                
+                if (currentQuestion < testData.length - 1) {
+                    currentQuestion++;
+                    showQuestion(currentQuestion);
+                }
+            });
+            
+            // Предыдущий вопрос
+            prevBtn.addEventListener('click', () => {
+                if (currentQuestion > 0) {
+                    currentQuestion--;
+                    showQuestion(currentQuestion);
+                }
+            });
+            
+            // Отправка результатов
+            submitBtn.addEventListener('click', () => {
+                if (userAnswers[currentQuestion] === null) {
+                    alert('Пожалуйста, выберите ответ на текущий вопрос');
+                    return;
+                }
+                
+                const totalScore = userAnswers.reduce((sum, points) => sum + points, 0);
+                showResult(totalScore);
+            });
+            
+            // Показываем результат
+            function showResult(score) {
+                let title, text, emoji;
+                
+                if (score >= 20) {
+                    title = "Поздравляем, ты готов к студенческой жизни на все 100!";
+                    text = " В тебе огромный потенциал, и мы готовы помочь раскрыть его! Хочешь познакомиться с единомышленниками из топовых вузов и встретиться с представителями ведущих компаний? Тогда приглашаем на наш «курс Первокурсника», где у каждого студента будет такая уникальная возможность! Курс абсолютно бесплатный, да ещë и онлайн. Можешь смотреть его в любой момент. А самые активные ребята смогут выиграть классные призы: колонку, наушники, айпад 😉 Будем ждать!";
+                    emoji = "🎉🌟😍";
+                } else if (score >= 14) {
+                    title = "Ты на правильном пути!";
+                    text = "Студенчество – это самый лучший и яркий период в жизни каждого. И чтобы никакие трудности не помешали насладиться им, мы готовы в этом помочь! Специально для тебя мы создали «Курс Первокурсника», на котором можно получить поддержку и практичные советы по тайм-менеджменту, самодисциплине и будущей карьере. Курс абсолютно бесплатный, да ещë и онлайн. Можешь смотреть его в любой момент. А самые активные ребята смогут выиграть классные призы: колонку, наушники, айпад 😉 Будем ждать!";
+                    emoji = "👍✨😊";
+                } else {
+                    title = "Переживаешь из-за учëбы?";
+                    text = "Страшно знакомиться и высказывать своë мнение? Мы готовы помочь с этим! На нашем «Курсе Первокурсника» ты обретëшь уверенность в себе и сможешь прокачать soft навыки, которые будут также полезны для будущей карьеры! Курс абсолютно бесплатный, да ещë и онлайн. Можешь смотреть его в любой момент. А самые активные ребята смогут выиграть классные призы: колонку, наушники, айпад 😉 Будем ждать!";
+                    emoji = "🤗💪😌";
+                }
+                
+                resultDiv.innerHTML = `
+                    <h2 class="result-title">${title}</h2>
+                    <div class="emoji-container">${emoji}</div>
+                    <div class="score">Ваш результат: ${score} баллов</div>
+                    <p class="result-text">${text}</p>
+                `;
+                
+                document.querySelector('.test-content').style.display = 'none';
+                resultDiv.style.display = 'block';
+                progressBar.style.width = '100%';
+            }
+        });
+    </script>
+</body>
+</html>
